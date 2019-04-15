@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div data-th-fragment="choose">
+    <h1 class="my-4">工具集</h1>
+    <div class="list-group">
+        <li th:each="tool : ${toolsList}" style="list-style-type:none;">
+            <a th:id="${tool.toolAlias}" th:href="@{'/module/' + ${tool.toolId}}" class="list-group-item" th:text="${tool.toolName}" th:onclick="@{${tool.toolAlias} + '()'}">全过程内弹道计算工具</a>
+        </li>
+
+        <!--<a href="#" class="list-group-item" onclick="gasParas()">气动参数计算</a>
+        <a href="#" class="list-group-item" onclick="motorCommon()">发动机常用参数计算</a>-->
+    </div>
+</div>
+
+</body>
+</html>
