@@ -38,4 +38,14 @@ public class SrmVO {
 	public void setEnv(EnvironmentParas env) {
 		this.env = env;
 	}
+
+	@Override
+	public String toString() {
+		return "SrmVO{" +
+				"propmain=" + propmain +
+				", propig=" + propig +
+				", motor=" + motor +
+				", env=" + env +
+				'}';
+	}
 }

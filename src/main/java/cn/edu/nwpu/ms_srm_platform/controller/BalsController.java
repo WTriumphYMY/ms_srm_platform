@@ -3,7 +3,11 @@ package cn.edu.nwpu.ms_srm_platform.controller;
 import cn.edu.nwpu.ms_srm_platform.client.BalsZeroClient;
 import cn.edu.nwpu.ms_srm_platform.domain.SrmVO;
 import com.alibaba.druid.support.json.JSONUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.netflix.discovery.converters.wrappers.CodecWrappers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,13 +23,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class BalsController {
     @Autowired
     private BalsZeroClient balsZeroClient;
-
-    @PostMapping("/bals")
-    public String calculateBalsZero(SrmVO srmVO, @RequestParam("srmName") String srmName,
-                                    @RequestPart("grains") MultipartFile[] grains){
-        String balsResult = balsZeroClient.getBalsResult(srmVO, srmName, grains);
-        return balsResult;
-    }
 
     @PostMapping("/bals/blur")
     public SrmVO showParams(String srmName){

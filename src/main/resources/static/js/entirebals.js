@@ -53,7 +53,7 @@ $(function(){
 function submitForm(){
     var form = new FormData($("#calForm")[0]);
     $.ajax({
-        url:"/bals",
+        url:"http://localhost:8081/module/bals",
         type:"post",
         data:form,
         cache: false,
