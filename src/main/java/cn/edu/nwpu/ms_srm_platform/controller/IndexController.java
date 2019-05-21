@@ -1,13 +1,18 @@
 package cn.edu.nwpu.ms_srm_platform.controller;
 
+import cn.edu.nwpu.ms_srm_platform.client.ExpFilterClient;
+import cn.edu.nwpu.ms_srm_platform.client.ExpManageClient;
+import cn.edu.nwpu.ms_srm_platform.domain.SrmExperiment;
 import cn.edu.nwpu.ms_srm_platform.domain.ToolsList;
 import cn.edu.nwpu.ms_srm_platform.repository.ToolsListRepository;
+import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -22,6 +27,10 @@ public class IndexController {
 
     @Autowired
     private ToolsListRepository toolsListRepository;
+    @Autowired
+    private ExpManageClient expManageClient;
+    @Autowired
+    private ExpFilterClient expFilterClient;
 
     @GetMapping("/platform")
     public String showIndex(Model model){
@@ -42,6 +51,50 @@ public class IndexController {
         List<ToolsList> toolsList = toolsListRepository.findAll();
         model.addAttribute("toolsList", toolsList);
         model.addAttribute("tool", tool);
-        return tool.getToolAlias();
+        return "forward:/"+tool.getToolAlias();
     }
+
+    @GetMapping("/expmanage")
+    public String showExpManage(Model model){
+        model.addAttribute("expData", expManageClient.getAllExp());
+        return "expmanage";
+    }
+
+    @GetMapping("/expfilter")
+    public String showExpFilter(Model model){
+        model.addAttribute("srmNames", expManageClient.getAllSrmName());
+        return "expfilter";
+    }
+
+    @GetMapping("/expfilter/{srmName}")
+    public String selectedExpFilter(@PathVariable String srmName, Model model){
+        ToolsList tool = toolsListRepository.findByToolAlias("expfilter");
+        List<ToolsList> toolsList = toolsListRepository.findAll();
+        model.addAttribute("toolsList", toolsList);
+        model.addAttribute("tool", tool);
+        SrmExperiment srmExperiment = expManageClient.getExpByName(srmName);
+        String[] tStrArr = srmExperiment.getExpTime().split(",");
+        String[] pStrArr = srmExperiment.getExpPressure().split(",");
+        String[] fStrArr = srmExperiment.getExpForce().split(",");
+        double[] pArr = new double[pStrArr.length];
+        double[] fArr = new double[fStrArr.length];
+        for (int i = 0; i < pStrArr.length; i++) {
+            pArr[i] = Double.parseDouble(pStrArr[i]);
+            fArr[i] = Double.parseDouble(fStrArr[i]);
+        }
+        List<Double> pSmoothList = expFilterClient.getSmoothData(pArr);
+        List<Double> fSmoothList = expFilterClient.getSmoothData(fArr);
+        model.addAttribute("timeSeries", Arrays.asList(tStrArr));
+        model.addAttribute("rawPSeries", Arrays.asList(pStrArr));
+        model.addAttribute("rawFSeries", Arrays.asList(fStrArr));
+        model.addAttribute("smoothPSeries", pSmoothList);
+        model.addAttribute("smoothFSeries", fSmoothList);
+        return "expfilter";
+    }
+
+    @GetMapping("/entirebals")
+    public String showEntirebals(Model model){
+        return "entirebals";
+    }
+
 }

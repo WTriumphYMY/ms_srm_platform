@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta http-equiv="Content-Type" content="multipart/form-data; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>SRM806工具集</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesom字体 -->
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+    <!-- Custom styles for this template -->
+    <link href="/css/shop-item.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+<!-- Page Content -->
+<div class="container">
+
+    <div class="row">
+        <div class="col-lg-3"th:include="fragments/choose :: choose"></div>
+        <!-- /.col-lg-3 -->
+        <div class="col-lg-9">
+            <div class="card mt-4">
+                <img class="card-img-top img-fluid" src="/image/srm.jpg" alt="你瞅啥">
+                <div class="card-body">
+                    <h3 class="card-title" th:text="${tool.toolName}">固体火箭发动机计算工具集</h3>
+                    <h4 th:text="${tool.toolAuthor}">凯璇大帝</h4>
+                    <p class="card-text" th:text="${tool.toolDesc}">在左侧选择计算工具模块</p>
+                    <!-- <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>
+                    4.0 stars -->
+                </div>
+            </div>
+            <!-- /.card -->
+            <div th:replace="~{calModule/expmanagement :: manage}"></div>
+        </div>
+
+        <!-- /.col-lg-9 -->
+    </div>
+
+
+
+</div>
+<!-- /.container -->
+<div id="popcontent" style="display: none">
+    <button type="button" class="btn btn-primary btn-sm" onclick="popok()">确定</button>
+    <button type="button" class="btn btn-secondary btn-sm" onclick="popcancel()">取消</button>
+</div>
+<!-- Footer -->
+<div th:replace="~{fragments/footer :: footer}">...</div>
+
+<!-- Bootstrap core JavaScript -->
+
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.bundle.min.js"></script>
+<script src="/js/expmanage.js"></script>
+<script src="/js/custom.js"></script>
+<script src="/js/highcharts/highcharts.js"></script>
+<script src="/js/highcharts/exporting.js"></script>
+<script src="/js/highcharts/series-label.js"></script>
+<script src="/js/highcharts/oldie.js"></script>
+<script src="/js/highcharts/boost.js"></script>
+</body>
+
+</html>

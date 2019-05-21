@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div data-th-fragment="manage">
+<div class="row">
+    <div class="col-md-12 m-auto">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">试验名称/编号</th>
+                <th scope="col">压强</th>
+                <th scope="col">推力</th>
+                <th scope="col">保存时间</th>
+                <th scope="col">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="exp,expStat : ${expData}">
+                <th scope="row" th:text="${expStat.count}">1</th>
+                <td th:text="${exp.srmName}" class ="text-left">Mark</td>
+                <td class ="text-left"><a id="pChart" href="javascript:void(0);" th:onclick="showChart([[${exp.expTime}]],[[${exp.expPressure}]],'p')" style="float:left">
+                    <i class="icon-bar-chart" aria-hidden="true"></i>
+                </a></td>
+                <td class ="text-left"><a id="fChart" href="javascript:void(0);" th:onclick="showChart([[${exp.expTime}]],[[${exp.expForce}]],'f')" style="float:left">
+                    <i class="icon-bar-chart" aria-hidden="true"></i>
+                </a></td>
+                <td th:text="${exp.gmtCreate}" class ="text-left">时间</td>
+                <td class ="text-left"><a href="javascript:void(0);" class="myedit" id="editSingle" data-toggle="popover" style="float:left">
+                    <i class="icon-edit" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="编辑"></i>
+                </a>
+                    <span>&nbsp;</span>
+                    <a id="delSingle" class="mydel" href="javascript:void(0);" data-toggle="popover" style="float:left">
+                        <i class=" icon-trash" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="删除"></i>
+                    </a>
+                    <span>&nbsp;</span>
+                    <a id="detailSingle" href="javascript:void(0);" th:onclick="detailSingleRec([[${exp.pkId}]])" style="float:left">
+                        <i class="icon-eye-open" aria-hidden="true" data-toggle="tooltip" data-placement="top" title="详情"></i>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div th:replace="~{fragments/figureModal :: figureModal}"></div>
+</div>
+</body>
+</html>

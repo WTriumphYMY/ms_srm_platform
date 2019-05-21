@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div data-th-fragment="filter">
+    <div class="row">
+        <div class="col align-self-center">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    选择实验数据
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" th:each="name : ${srmNames}" th:href="@{'/expfilter/' + ${name}}" th:text="${name}">按钮啦</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-6" id="rawPressureFig">
+
+        </div>
+        <div class="col-6" id="smoothPressureFig">
+
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-6" id="rawForceFig">
+
+        </div>
+        <div class="col-6" id="smoothForceFig">
+
+        </div>
+    </div>
+
+    <input type="hidden" id="time" th:value=" ${timeSeries}"/>
+    <input type="hidden" id="rawP" th:value=" ${rawPSeries}"/>
+    <input type="hidden" id="smoothP" th:value=" ${smoothPSeries}"/>
+    <input type="hidden" id="rawF" th:value=" ${rawFSeries}"/>
+    <input type="hidden" id="smoothF" th:value=" ${smoothFSeries}"/>
+</div>
+</body>
+</html>
