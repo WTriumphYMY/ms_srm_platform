@@ -11,6 +11,7 @@ spring:
       max-wait: 6000
   application:
     name: ms_srm_platform
+
 eureka:
   client:
     service-url:

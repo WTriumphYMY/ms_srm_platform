@@ -4,14 +4,18 @@ import cn.edu.nwpu.ms_srm_platform.client.ExpFilterClient;
 import cn.edu.nwpu.ms_srm_platform.client.ExpManageClient;
 import cn.edu.nwpu.ms_srm_platform.domain.SrmExperiment;
 import cn.edu.nwpu.ms_srm_platform.domain.ToolsList;
+import cn.edu.nwpu.ms_srm_platform.domain.User;
 import cn.edu.nwpu.ms_srm_platform.repository.ToolsListRepository;
+import cn.edu.nwpu.ms_srm_platform.service.UserService;
 import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,9 +35,20 @@ public class IndexController {
     private ExpManageClient expManageClient;
     @Autowired
     private ExpFilterClient expFilterClient;
+    @Autowired
+    private UserService userService;
+
+    @GetMapping("/login")
+    public String loginPage(){
+        return "balslogin";
+    }
 
     @GetMapping("/platform")
-    public String showIndex(Model model){
+    public String showIndex(Model model, HttpServletRequest request){
+        Object user = request.getSession().getAttribute("user");
+        if (user == null){
+            return "redirect:/login";
+        }
         List<ToolsList> toolsList = toolsListRepository.findAll();
         model.addAttribute("toolsList", toolsList);
         return "index";
@@ -93,8 +108,18 @@ public class IndexController {
     }
 
     @GetMapping("/entirebals")
-    public String showEntirebals(Model model){
+    public String showEntirebals(){
         return "entirebals";
     }
 
+    @PostMapping("/login")
+    public String login(User user, HttpServletRequest request, Model model){
+        if (userService.login(user)){
+            request.getSession().setAttribute("user", user);
+            return "redirect:/platform";
+        }else {
+            model.addAttribute("message", "用户名或密码错误");
+            return "balslogin";
+        }
+    }
 }
